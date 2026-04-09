@@ -1,4 +1,4 @@
-package org.example.utils;
+package org.example.utils.generators;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
