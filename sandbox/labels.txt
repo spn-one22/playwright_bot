@@ -15,7 +15,11 @@ pre form?
 <input placeholder="с http://" name="LimitUrlForm[url]" id="LimitUrlForm_url" type="text">
 
 
-
+<div class="control-group row success">
+<label for="NewCommentForm_reposturl2">Ссылка на запись, которой сделали репост</label>
+<input placeholder="с http://" name="NewCommentForm[url]" id="NewCommentForm_url" type="text" value="">
+<div class="errorMessage" id="NewCommentForm_url_em_" style="display:none"></div>                                
+</div>
 
 
 
