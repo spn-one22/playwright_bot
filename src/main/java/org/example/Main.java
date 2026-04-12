@@ -13,6 +13,7 @@ public class Main {
         long start = System.currentTimeMillis();
 
         try (Playwright playwright = Playwright.create()) {
+
             Browser browser = BrowserFactory.create(playwright);
             BrowserContext context = SessionManager.initContext(browser);
             Page page = context.newPage();
@@ -24,7 +25,6 @@ public class Main {
             // LOGIN
             AuthModule.ensureLogin(page, context);
 
-            //
             ProjectModule project = new ProjectModule(page);
 
             // 👉 получаем проекты

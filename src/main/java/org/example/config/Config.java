@@ -5,6 +5,7 @@ public class Config {
     public static final String BASE_URL = "https://qcomment.com/author/";
 
 }
+
 // https://qcomment.com/author?user=Frodo1111   - c предаполнением
 // https://qcomment.com/author/project/4783429 -  с предвыбором из возможных
 
