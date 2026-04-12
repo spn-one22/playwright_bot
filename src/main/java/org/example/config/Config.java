@@ -10,3 +10,5 @@ public class Config {
 
 // https://qcomment.com/author?user=user2684859
 // https://qcomment.com/author?user=interfox  -  https://qcomment.com/author/project/4849214
+
+//https://qcomment.com/author?user=svzel - for debug repeating usernames

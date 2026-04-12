@@ -17,27 +17,14 @@ public class Main {
             BrowserContext context = SessionManager.initContext(browser);
             Page page = context.newPage();
 
-//            // Блок логирования - начало
-//            page.onResponse(response -> {
-//                System.out.println("Response: " + response.status() + " " + response.url());
-//            });
-//
-//            page.onRequestFailed(request -> {
-//                System.out.println("FAILED: " + request.url());
-//            });
-//
-//            page.onConsoleMessage(msg -> {
-//                System.out.println("Console: " + msg.text());
-//            });
-//
-//            page.onRequest(request -> {
-//                System.out.println("Request: " + request.method() + " " + request.url());
-//            });
-//
-//            // Блок логирования - конец
+            // TRAFFIC MEASURE
+            NetworkTrafficCollector traffic = new NetworkTrafficCollector();
+            traffic.attach(page);
 
+            // LOGIN
             AuthModule.ensureLogin(page, context);
 
+            //
             ProjectModule project = new ProjectModule(page);
 
             // 👉 получаем проекты
@@ -69,8 +56,9 @@ public class Main {
             TaskProcessor processor = new TaskProcessor(page);
             processor.processTask();
 
-
-
+            // TRAFFIC INFO LOG
+            System.out.println("Requests: " + traffic.getRequestCount());
+            System.out.println("Total MB: " + traffic.getTotalMB());
         } catch (Exception e) {
             e.printStackTrace();
         }

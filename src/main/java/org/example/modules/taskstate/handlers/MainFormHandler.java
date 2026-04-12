@@ -14,14 +14,27 @@ public class MainFormHandler implements TaskHandler {
     @Override
     public void handle(Page page) {
 
+        String link = Extractor.extractUrl(page);
+        String baseUsername = Extractor.extractUsername(page);
+        String approvedUsername = null;
+
         Random random = new Random();
 
         System.out.println("🧩 Обработка MAIN_FORM");
 
         // FILL TARGET LINK
         for (int i = 0; i < 3; i++) {
-            String link = Extractor.extractUrl(page);
-            FormFiller.fillIfExists(page, FormFiller.urlField(page), link + i);
+            String candidate;
+
+            if (i == 0) {
+                // первая попытка — чистый username
+                candidate = link;
+            } else {
+                // последующие — с рандомным числом
+                int randomNum = 1 + random.nextInt(9);
+                candidate = link + randomNum;
+            }
+            FormFiller.fillIfExists(page, FormFiller.urlField(page), candidate);
 
             if (!FormFiller.hasError(FormFiller.urlField(page))) {
                 System.out.println("✅ Поле заполнено успешно");
@@ -33,9 +46,6 @@ public class MainFormHandler implements TaskHandler {
         }
 
         // FILL USERNAME
-        String approvedUsername = null;
-        String baseUsername = Extractor.extractUsername(page);
-
         for (int i = 0; i < 3; i++) {
             String candidate;
 
@@ -66,8 +76,6 @@ public class MainFormHandler implements TaskHandler {
         if (approvedUsername != null) {
             baseUsername = approvedUsername;
 
-            Locator messageField = FormFiller.messageField(page);
-
             for (int i = 0; i < 3; i++) {
                 String candidate;
 
@@ -82,18 +90,19 @@ public class MainFormHandler implements TaskHandler {
 
                 System.out.println("Trying accountLink: " + candidate);
 
-                FormFiller.fillIfExists(page, messageField, candidate);
+                FormFiller.fillIfExists(page, FormFiller.messageField(page), candidate);
 
-                if (!FormFiller.hasError(messageField)) {
+                if (!FormFiller.hasError(FormFiller.messageField(page))) {
                     System.out.println("✅ Поле заполнено успешно");
                     break;
                 }
             }
 
+            // FILL ADDITIONAL INFO
             Locator dopInfoBtn = FormFiller.dopInfoButton(page);
             if (dopInfoBtn.isVisible()) {
                 dopInfoBtn.click();
-                FormFiller.fillIfExists(page, FormFiller.dopInfoField(page), "Доп инфа");
+                FormFiller.fillIfExists(page, FormFiller.dopInfoField(page), "-");
             }
 
             Locator submitBtn = FormFiller.submitButton(page);

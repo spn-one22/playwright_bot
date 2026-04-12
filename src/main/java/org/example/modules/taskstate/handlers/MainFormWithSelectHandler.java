@@ -7,16 +7,20 @@ import org.example.modules.taskstate.TaskHandler;
 import org.example.utils.FormFiller;
 import org.example.utils.generators.Extractor;
 
+import java.util.Random;
+
 public class MainFormWithSelectHandler implements TaskHandler {
 
     @Override
     public void handle(Page page) {
-        System.out.println("🧩 MAIN_FORM_WITH_SELECT handler");
+        Random random = new Random();
 
+        System.out.println("🧩 Обработка MAIN_FORM");
+
+        // FILL TARGET LINK
         for (int i = 0; i < 3; i++) {
             String link = Extractor.extractUrl(page);
-            if(i > 0) {link = link + 1;}
-            FormFiller.fillIfExists(page, FormFiller.urlField(page), link);
+            FormFiller.fillIfExists(page, FormFiller.urlField(page), link + i);
 
             if (!FormFiller.hasError(FormFiller.urlField(page))) {
                 System.out.println("✅ Поле заполнено успешно");
@@ -26,24 +30,30 @@ public class MainFormWithSelectHandler implements TaskHandler {
                 page.waitForTimeout(3000);
             }
         }
+
+        // FILL USERNAME
+        String approvedUsername = null;
+        String baseUsername = Extractor.extractUsername(page);
+
         for (int i = 0; i < 3; i++) {
-            String link = "@username" + (i + 1);
-            FormFiller.fillIfExists(page, FormFiller.usernameField(page), link);
+            String candidate;
+
+            if (i == 0) {
+                // первая попытка — чистый username
+                candidate = baseUsername;
+            } else {
+                // последующие — с рандомным числом
+                int randomNum = 1 + random.nextInt(99);
+                candidate = baseUsername + randomNum;
+            }
+
+            System.out.println("Trying username: " + candidate);
+
+            FormFiller.fillIfExists(page, FormFiller.usernameField(page), candidate);
 
             if (!FormFiller.hasError(FormFiller.usernameField(page))) {
                 System.out.println("✅ Поле заполнено успешно");
-                break;
-            } else {
-                System.out.println("❌ Ошибка валидации, пробуем ещё раз");
-                page.waitForTimeout(3000);
-            }
-        }
-        for (int i = 0; i < 3; i++) {
-            String link = "example.com/@username" + (i + 1);
-            FormFiller.fillIfExists(page, FormFiller.messageField(page), link);
-
-            if (!FormFiller.hasError(FormFiller.messageField(page))) {
-                System.out.println("✅ Поле заполнено успешно");
+                approvedUsername = candidate; // сохраняем именно успешный вариант
                 break;
             } else {
                 System.out.println("❌ Ошибка валидации, пробуем ещё раз");
@@ -51,19 +61,49 @@ public class MainFormWithSelectHandler implements TaskHandler {
             }
         }
 
-        Locator dopInfoBtn = FormFiller.dopInfoButton(page);
-        if (dopInfoBtn.isVisible()) {
-            dopInfoBtn.click();
-            FormFiller.fillIfExists(page, FormFiller.dopInfoField(page), "Доп инфа");
-        }
+        //FILL ACCOUNT LINK
+        if (approvedUsername != null) {
+            baseUsername = approvedUsername;
 
-        Locator submitBtn = FormFiller.submitButton(page);
-        submitBtn.waitFor();
-        page.waitForFunction(
-                "!document.querySelector('#model-form input[type=submit]').disabled"
-        );
-        submitBtn.click();
-        System.out.println("📤 Форма отправлена");
-        submitBtn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.DETACHED));
+            Locator messageField = FormFiller.messageField(page);
+
+            for (int i = 0; i < 3; i++) {
+                String candidate;
+
+                if (i == 0) {
+                    // первая попытка — просто username
+                    candidate = Extractor.extractBaseUrl(Extractor.extractUrl(page)) + baseUsername;
+                } else {
+                    // дальше — добавляем числа
+                    int randomNum = 1 + random.nextInt(99);
+                    candidate = Extractor.extractBaseUrl(Extractor.extractUrl(page)) + baseUsername + randomNum;
+                }
+
+                System.out.println("Trying accountLink: " + candidate);
+
+                FormFiller.fillIfExists(page, messageField, candidate);
+
+                if (!FormFiller.hasError(messageField)) {
+                    System.out.println("✅ Поле заполнено успешно");
+                    break;
+                }
+            }
+
+            // FILL ADDITIONAL INFO
+            Locator dopInfoBtn = FormFiller.dopInfoButton(page);
+            if (dopInfoBtn.isVisible()) {
+                dopInfoBtn.click();
+                FormFiller.fillIfExists(page, FormFiller.dopInfoField(page), "-");
+            }
+
+            Locator submitBtn = FormFiller.submitButton(page);
+            submitBtn.waitFor();
+            page.waitForFunction(
+                    "!document.querySelector('#model-form input[type=submit]').disabled"
+            );
+            submitBtn.click();
+            System.out.println("📤 Форма отправлена");
+            submitBtn.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.DETACHED));
+        }
     }
 }

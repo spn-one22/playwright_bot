@@ -70,7 +70,7 @@ public class Extractor {
 
         el.waitFor();
 
-        return el.textContent().trim();
+        return el.textContent().trim().replace("_", "");
     }
 }
 //
