@@ -6,11 +6,12 @@ import com.microsoft.playwright.Page;
 import java.net.URI;
 import java.util.Random;
 
-public class UrlExtractor {
+public class Extractor {
 
     // ---------------------------
     // 1️⃣ Получить ссылку (основная + fallback)
     // ---------------------------
+
     public static String extractUrl(Page page) {
 
         // 🔹 Вариант 1 — основная ссылка
@@ -58,6 +59,18 @@ public class UrlExtractor {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String extractUsername(Page page) {
+        Locator el = page.locator("#menuUrl");
+
+        if (el.count() == 0 || !el.isVisible()) {
+            return null;
+        }
+
+        el.waitFor();
+
+        return el.textContent().trim();
     }
 }
 //

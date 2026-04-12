@@ -5,7 +5,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import org.example.modules.taskstate.TaskHandler;
 import org.example.utils.FormFiller;
-import org.example.utils.generators.UrlExtractor;
+import org.example.utils.generators.Extractor;
 
 public class MainFormWithSelectHandler implements TaskHandler {
 
@@ -14,7 +14,7 @@ public class MainFormWithSelectHandler implements TaskHandler {
         System.out.println("🧩 MAIN_FORM_WITH_SELECT handler");
 
         for (int i = 0; i < 3; i++) {
-            String link = UrlExtractor.extractUrl(page);
+            String link = Extractor.extractUrl(page);
             if(i > 0) {link = link + 1;}
             FormFiller.fillIfExists(page, FormFiller.urlField(page), link);
 
