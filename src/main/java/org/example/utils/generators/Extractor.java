@@ -52,11 +52,37 @@ public class Extractor {
     // 2️⃣ Получить чистый домен (base URL)
     // ---------------------------
     public static String extractBaseUrl(String fullUrl) {
+        if (fullUrl == null || fullUrl.isEmpty()) {
+            return null;
+        }
+
         try {
-            URI uri = new URI(fullUrl);
-            return uri.getScheme() + "://" + uri.getHost() + "/";
+            // 1️⃣ Убираем всё после запрещённых символов
+            String cleaned = fullUrl
+                    .replaceAll("[\\s\"'<>].*$|", "")   // пробелы, html мусор
+                     .split("\\|")[0]                  // всё после |
+                    .trim();
+
+            // 2️⃣ Если нет схемы — добавляем
+            if (!cleaned.matches("^(http|https)://.*")) {
+                cleaned = "https://" + cleaned;
+            }
+
+            // 3️⃣ Пытаемся через URI
+            URI uri = new URI(cleaned);
+
+            String scheme = uri.getScheme();
+            String host = uri.getHost();
+
+            // 4️⃣ fallback если URI не смог вытащить host
+            if (host == null) {
+                host = cleaned.replaceAll("https?://([^/]+).*", "$1");
+            }
+
+            return scheme + "://" + host + "/";
+
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("⚠️ Failed to parse URL: " + fullUrl);
             return null;
         }
     }
@@ -78,3 +104,83 @@ public class Extractor {
 //        String currentProjectUrl = page.url();
 //        System.out.println("⚠️ Ссылка на сайт заказчика не найдена, используем URL текущего проекта: " + currentProjectUrl);
 //        return currentProjectUrl;
+
+
+/*
+
+
+public static String extractBaseUrl(String input) {
+
+    // 🔹 Проверка на null — если строка пустая, сразу выходим
+    if (input == null) return null;
+
+    try {
+        // ---------------------------
+        // 1️⃣ ИЩЕМ URL В СТРОКЕ
+        // ---------------------------
+
+        */
+/*
+         regex:
+         https?://        → ищем http:// или https://
+         [^\\s\"'<>|]+    → дальше берём все символы,
+                            пока не встретим:
+                            - пробел
+                            - кавычки
+                            - < >
+                            - |
+
+         👉 по сути: "возьми нормальную часть URL и обрежь мусор"
+        *//*
+
+        Pattern pattern = Pattern.compile("(https?://[^\\s\"'<>|]+)");
+
+        // создаём matcher для поиска в строке
+        Matcher matcher = pattern.matcher(input);
+
+        // если URL не найден — возвращаем null
+        if (!matcher.find()) {
+            return null;
+        }
+
+        // 🔹 берём найденный "чистый" URL (без мусора)
+        String cleanUrl = matcher.group(1);
+
+        // ---------------------------
+        // 2️⃣ ПАРСИМ URL
+        // ---------------------------
+
+        */
+/*
+         URI разбивает ссылку на части:
+         https://site.ru/path
+
+         scheme → https
+         host   → site.ru
+         path   → /path
+        *//*
+
+        URI uri = new URI(cleanUrl);
+
+        // ---------------------------
+        // 3️⃣ СОБИРАЕМ BASE URL
+        // ---------------------------
+
+        */
+/*
+         Нам нужен только:
+         protocol + host
+
+         👉 https://site.ru/
+         *//*
+
+        return uri.getScheme() + "://" + uri.getHost() + "/";
+
+    } catch (Exception e) {
+
+        // если что-то пошло не так (битый URL, странный формат)
+        System.out.println("⚠️ Failed to parse: " + input);
+
+        return null;
+    }
+*/

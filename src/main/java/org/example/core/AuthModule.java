@@ -2,11 +2,12 @@ package org.example.core;
 
 import com.microsoft.playwright.*;
 import org.example.config.*;
+import org.example.profile.*;
 
 
 public class AuthModule {
 
-    public static void ensureLogin(Page page, BrowserContext context) throws Exception {
+    public static void ensureLogin(Page page, BrowserContext context, AccountProfile profile) throws Exception {
 
         page.navigate(Config.BASE_URL);
 
@@ -14,7 +15,7 @@ public class AuthModule {
             System.out.println("🔐 Логин вручную и ENTER...");
             System.in.read();
 
-            SessionManager.save(context);
+            SessionManager.save(context, profile);
         }
         // System.out.println(page.content());
     }

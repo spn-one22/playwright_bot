@@ -3,6 +3,8 @@ package org.example;
 import com.microsoft.playwright.*;
 import org.example.core.*;
 import org.example.modules.*;
+import org.example.profile.*;
+
 
 import java.util.Collections;
 import java.util.List;
@@ -14,8 +16,10 @@ public class Main {
 
         try (Playwright playwright = Playwright.create()) {
 
+            AccountProfile profile = ProfileManager.create("spn_one");
+            ProfileLoader.load(profile);
             Browser browser = BrowserFactory.create(playwright);
-            BrowserContext context = SessionManager.initContext(browser);
+            BrowserContext context = SessionManager.initContext(browser, profile);
             Page page = context.newPage();
 
             // TRAFFIC MEASURE
@@ -23,7 +27,7 @@ public class Main {
             traffic.attach(page);
 
             // LOGIN
-            AuthModule.ensureLogin(page, context);
+            AuthModule.ensureLogin(page, context, profile);
 
             ProjectModule project = new ProjectModule(page);
 

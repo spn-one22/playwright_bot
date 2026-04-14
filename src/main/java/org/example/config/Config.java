@@ -2,10 +2,10 @@ package org.example.config;
 
 public class Config {
 
-    public static final String BASE_URL = "https://qcomment.com/author/";
+    public static final String BASE_URL = "https://qcomment.com/author?user=marselufa";
 
 }
-
+// ip check - https://2ip.ru
 // https://qcomment.com/author?user=Frodo1111   - c предаполнением
 // https://qcomment.com/author/project/4783429 -  с предвыбором из возможных
 
@@ -13,3 +13,5 @@ public class Config {
 // https://qcomment.com/author?user=interfox  -  https://qcomment.com/author/project/4849214
 
 //https://qcomment.com/author?user=svzel - for debug repeating usernames
+
+//https://qcomment.com/author?user=marselufa - тут чет сломалось
