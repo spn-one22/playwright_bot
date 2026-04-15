@@ -16,9 +16,29 @@ public class Main {
 
         try (Playwright playwright = Playwright.create()) {
 
-            AccountProfile profile = ProfileManager.create("spn_one");
+            AccountProfile profile = ProfileManager.create("spn_one2");
             ProfileLoader.load(profile);
-            Browser browser = BrowserFactory.create(playwright);
+
+
+            System.out.println("==== PROFILE DEBUG ====");
+
+            System.out.println("Fingerprint: " + profile.fingerprint);
+
+            if (profile.proxy != null) {
+                System.out.println("Proxy type: " + profile.proxy.type);
+                System.out.println("Proxy host: " + profile.proxy.host);
+                System.out.println("Proxy port: " + profile.proxy.port);
+            } else {
+                System.out.println("Proxy: NULL");
+            }
+
+            System.out.println("======================");
+
+            System.out.println(profile.fingerprint.userAgent);
+
+
+
+            Browser browser = BrowserFactory.create(playwright, profile);
             BrowserContext context = SessionManager.initContext(browser, profile);
             Page page = context.newPage();
 

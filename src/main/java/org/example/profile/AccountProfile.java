@@ -12,10 +12,6 @@ public class AccountProfile {
     public Path proxyFile;
     public Path fingerprintFile;
 
-    // =========================
-    // 🔥 ДОБАВЛЯЕМ ЭТИ ПОЛЯ
-    // =========================
-
     public Fingerprint fingerprint;
     public ProxyData proxy;
 }

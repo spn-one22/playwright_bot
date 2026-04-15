@@ -18,6 +18,7 @@ public class ProjectModule {
 
         PageLoader basePageLoader = new PageLoader(page, 10000, 3);
         basePageLoader.load(Config.BASE_URL);
+        System.out.println("🌍 Текущий IP: " + page.content());
 
         page.waitForSelector("article.single");
 

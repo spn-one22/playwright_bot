@@ -27,22 +27,7 @@ public class SessionManager {
                 .setIsMobile(profile.fingerprint.isMobile)
                 .setHasTouch(profile.fingerprint.hasTouch);
 
-        // =========================
-        // 🌐 PROXY
-        // =========================
-        if (profile.proxy != null) {
 
-            Proxy proxy = new Proxy(
-                    "http://" + profile.proxy.host + ":" + profile.proxy.port
-            );
-
-            if (profile.proxy.username != null) {
-                proxy.setUsername(profile.proxy.username);
-                proxy.setPassword(profile.proxy.password);
-            }
-
-            options.setProxy(proxy);
-        }
 
         // =========================
         // 🍪 SESSION (если есть)
