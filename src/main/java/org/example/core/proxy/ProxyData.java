@@ -1,20 +1,5 @@
-package org.example.profile;
+package org.example.core.proxy;
 
-//public class ProxyData {
-//
-//    public String type; // http, socks5
-//
-//    public String host;
-//    public int port;
-//
-//    public String username;
-//    public String password;
-//}
-
-
-/**
- * Модель прокси
- */
 public class ProxyData {
 
     private String type; // http, socks5

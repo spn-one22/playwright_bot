@@ -2,7 +2,7 @@ package org.example.core;
 
 import com.microsoft.playwright.*;
 import org.example.config.*;
-import org.example.profile.*;
+import org.example.core.profile.*;
 
 
 public class AuthModule {
@@ -17,6 +17,5 @@ public class AuthModule {
 
             SessionManager.save(context, profile);
         }
-        // System.out.println(page.content());
     }
 }

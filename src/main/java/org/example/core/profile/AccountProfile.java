@@ -1,4 +1,7 @@
-package org.example.profile;
+package org.example.core.profile;
+
+import org.example.core.geo.GeoData;
+import org.example.core.proxy.ProxyData;
 
 import java.nio.file.Path;
 
@@ -10,10 +13,9 @@ public class AccountProfile {
 
     public Path sessionFile;
     public Path proxyFile;
-    public Path fingerprintFile;
 
-    public Fingerprint fingerprint;
     public ProxyData proxy;
+    public GeoData geo;
 
     public AccountProfile(String id) {
         this.id = id;
@@ -24,6 +26,5 @@ public class AccountProfile {
         // 📄 файлы
         this.sessionFile = folder.resolve("session.json");
         this.proxyFile = folder.resolve("proxy.json");
-        this.fingerprintFile = folder.resolve("fingerprint.json");
     }
 }

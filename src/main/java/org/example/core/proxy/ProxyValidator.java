@@ -4,7 +4,6 @@ import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.example.profile.ProxyData;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;

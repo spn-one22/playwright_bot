@@ -2,8 +2,12 @@ package org.example;
 
 import com.microsoft.playwright.*;
 import org.example.core.*;
+import org.example.core.fingerprint.*;
+import org.example.core.geo.GeoService;
+import org.example.core.proxy.ProxyGuard;
 import org.example.modules.*;
-import org.example.profile.*;
+import org.example.core.profile.*;
+import org.example.utils.NetworkTrafficCollector;
 
 
 import java.util.Collections;
@@ -14,15 +18,33 @@ public class Main {
 
         long start = System.currentTimeMillis();
 
+        AccountProfile profile = ProfileManager.create("spn_one2");
+
+        try {
+            ProfileLoader.load(profile);
+        } catch (Exception e) {
+            throw new RuntimeException("Ошибка загрузки профиля", e);
+        }
+
+        ProxyGuard.validateOrThrow(profile.proxy);
+
+        // 🌍 1. Определяем GEO по прокси
+        profile.geo = GeoService.resolve(profile.proxy.getHost());
+
+        // 🔍 для проверки
+        System.out.println("GEO: " + profile.geo.country + " / " + profile.geo.timezone);
+
+        // 🧬 строим fingerprint
+        FingerprintSnapshot fp = FingerprintBuilder.build(profile);
+
+        // 🔍 debug
+        System.out.println("FP timezone: " + fp.browser.timezone);
+        System.out.println("FP locale: " + fp.browser.locale);
+
+
         try (Playwright playwright = Playwright.create()) {
 
-            AccountProfile profile = ProfileManager.create("spn_one2");
-            ProfileLoader.load(profile);
-
-
             System.out.println("==== PROFILE DEBUG ====");
-
-            System.out.println("Fingerprint: " + profile.fingerprint);
 
             if (profile.proxy != null) {
                 System.out.println("Proxy type: " + profile.proxy.getType());
@@ -34,12 +56,9 @@ public class Main {
 
             System.out.println("======================");
 
-            System.out.println(profile.fingerprint.userAgent);
-
-
 
             Browser browser = BrowserFactory.create(playwright, profile);
-            BrowserContext context = SessionManager.initContext(browser, profile);
+            BrowserContext context = SessionManager.initContext(browser, fp, profile);
             Page page = context.newPage();
 
             // TRAFFIC MEASURE

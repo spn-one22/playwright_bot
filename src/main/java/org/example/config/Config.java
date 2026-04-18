@@ -2,9 +2,11 @@ package org.example.config;
 
 public class Config {
 
-    public static final String BASE_URL = "https://2ip.ru ";
+    public static final String BASE_URL = "https://abrahamjuliot.github.io/creepjs/";
 }
-//  check - https://2ip.ru   |   https://api.ipify.org   -   content = IP
+// check - https://2ip.ru   |   https://api.ipify.org   -   content = IP
+// http://ip-api.com/json/ - geo
+// https://abrahamjuliot.github.io/creepjs/ - какая то факмашина, знает о тебе все
 
 // https://qcomment.com/author?user=Frodo1111   - c предаполнением
 // https://qcomment.com/author/project/4783429 -  с предвыбором из возможных

@@ -3,7 +3,6 @@ package org.example.modules;
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import org.example.config.Config;
-import org.example.core.PageLoader;
 import org.example.modules.filter.ProjectFilter;
 import org.example.utils.PriceAnalyzer;
 
@@ -18,7 +17,6 @@ public class ProjectModule {
 
         PageLoader basePageLoader = new PageLoader(page, 10000, 3);
         basePageLoader.load(Config.BASE_URL);
-        System.out.println("🌍 Текущий IP: " + page.content());
 
         page.waitForSelector("article.single");
 

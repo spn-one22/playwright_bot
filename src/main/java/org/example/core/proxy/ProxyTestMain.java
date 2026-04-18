@@ -1,8 +1,8 @@
 package org.example.core.proxy;
 
-import org.example.profile.AccountProfile;
-import org.example.profile.ProfileManager;
-import org.example.profile.ProfileLoader;
+import org.example.core.profile.AccountProfile;
+import org.example.core.profile.ProfileManager;
+import org.example.core.profile.ProfileLoader;
 
 public class ProxyTestMain {
 

@@ -1,22 +1,12 @@
-package org.example.profile;
+package org.example.core.profile;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class ProfileManager {
 
     public static AccountProfile create(String id) {
 
         AccountProfile profile = new AccountProfile(id);
-
-        profile.id = id;
-
-        profile.folder = Paths.get("profiles", id);
-
-        profile.sessionFile = profile.folder.resolve("session.json");
-        profile.proxyFile = profile.folder.resolve("proxy.json");
-        profile.fingerprintFile = profile.folder.resolve("fingerprint.json");
 
         // создаём папку профиля
         try {
