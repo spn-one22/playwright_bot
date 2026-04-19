@@ -1,4 +1,4 @@
-package org.example.core.device;
+package org.example.core.device.type;
 
 import java.util.Map;
 

@@ -1,5 +1,7 @@
 package org.example.core.device;
 
+import org.example.core.device.type.DeviceType;
+
 public class DeviceProfile {
 
     public DeviceType type;

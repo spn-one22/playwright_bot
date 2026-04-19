@@ -1,4 +1,4 @@
-package org.example.core.device;
+package org.example.core.device.type;
 
 public enum DeviceType {
     DESKTOP_WINDOWS,
